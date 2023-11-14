@@ -1,0 +1,203 @@
+
+stepper motor controller using at32.elf:     file format elf32-avr
+
+Sections:
+Idx Name          Size      VMA       LMA       File off  Algn
+  0 .text         000000f6  00000000  00000000  00000054  2**1
+                  CONTENTS, ALLOC, LOAD, READONLY, CODE
+  1 .data         00000000  00800060  00800060  0000014a  2**0
+                  CONTENTS, ALLOC, LOAD, DATA
+  2 .comment      00000030  00000000  00000000  0000014a  2**0
+                  CONTENTS, READONLY
+  3 .note.gnu.avr.deviceinfo 0000003c  00000000  00000000  0000017c  2**2
+                  CONTENTS, READONLY
+  4 .debug_aranges 00000020  00000000  00000000  000001b8  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  5 .debug_info   00000759  00000000  00000000  000001d8  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  6 .debug_abbrev 000005a1  00000000  00000000  00000931  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  7 .debug_line   0000030a  00000000  00000000  00000ed2  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  8 .debug_frame  00000024  00000000  00000000  000011dc  2**2
+                  CONTENTS, READONLY, DEBUGGING
+  9 .debug_str    00000369  00000000  00000000  00001200  2**0
+                  CONTENTS, READONLY, DEBUGGING
+ 10 .debug_loc    000001e5  00000000  00000000  00001569  2**0
+                  CONTENTS, READONLY, DEBUGGING
+ 11 .debug_ranges 00000028  00000000  00000000  0000174e  2**0
+                  CONTENTS, READONLY, DEBUGGING
+
+Disassembly of section .text:
+
+00000000 <__vectors>:
+   0:	0c 94 2a 00 	jmp	0x54	; 0x54 <__ctors_end>
+   4:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+   8:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+   c:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+  10:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+  14:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+  18:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+  1c:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+  20:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+  24:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+  28:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+  2c:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+  30:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+  34:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+  38:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+  3c:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+  40:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+  44:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+  48:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+  4c:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+  50:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+
+00000054 <__ctors_end>:
+  54:	11 24       	eor	r1, r1
+  56:	1f be       	out	0x3f, r1	; 63
+  58:	cf e5       	ldi	r28, 0x5F	; 95
+  5a:	d8 e0       	ldi	r29, 0x08	; 8
+  5c:	de bf       	out	0x3e, r29	; 62
+  5e:	cd bf       	out	0x3d, r28	; 61
+  60:	0e 94 36 00 	call	0x6c	; 0x6c <main>
+  64:	0c 94 79 00 	jmp	0xf2	; 0xf2 <_exit>
+
+00000068 <__bad_interrupt>:
+  68:	0c 94 00 00 	jmp	0	; 0x0 <__vectors>
+
+0000006c <main>:
+#include <avr/io.h>
+#include <util/delay.h>
+
+
+int main(){
+	DDRD = 0x0f; //0x0000 1111
+  6c:	8f e0       	ldi	r24, 0x0F	; 15
+  6e:	81 bb       	out	0x11, r24	; 17
+	PORTD = 0x00;
+  70:	12 ba       	out	0x12, r1	; 18
+	}
+	*/
+	//this cod is microstep mode
+	while(1){
+		for(int i=0; i<3; i++){
+			PORTD = 0x03; //0x0000 0011
+  72:	e3 e0       	ldi	r30, 0x03	; 3
+			_delay_ms(3);
+			PORTD = 0x2; //0x0000 0010
+  74:	72 e0       	ldi	r23, 0x02	; 2
+			_delay_ms(3);
+			PORTD = 0x06;//0x0000 0110
+  76:	66 e0       	ldi	r22, 0x06	; 6
+			_delay_ms(3);
+			PORTD = 0x04;//0x0000 0100
+  78:	54 e0       	ldi	r21, 0x04	; 4
+			_delay_ms(3);
+			PORTD = 0x0C;//0x0000 1100
+  7a:	4c e0       	ldi	r20, 0x0C	; 12
+			_delay_ms(3);
+			PORTD = 0x08;//0x0000 1000
+  7c:	38 e0       	ldi	r19, 0x08	; 8
+			_delay_ms(3);
+			PORTD = 0x09;//0x0000 1001
+  7e:	29 e0       	ldi	r18, 0x09	; 9
+#define F_CPU 8000000UL
+#include <avr/io.h>
+#include <util/delay.h>
+
+
+int main(){
+  80:	83 e0       	ldi	r24, 0x03	; 3
+  82:	90 e0       	ldi	r25, 0x00	; 0
+	}
+	*/
+	//this cod is microstep mode
+	while(1){
+		for(int i=0; i<3; i++){
+			PORTD = 0x03; //0x0000 0011
+  84:	e2 bb       	out	0x12, r30	; 18
+	#else
+		//round up by default
+		__ticks_dc = (uint32_t)(ceil(fabs(__tmp)));
+	#endif
+
+	__builtin_avr_delay_cycles(__ticks_dc);
+  86:	af e6       	ldi	r26, 0x6F	; 111
+  88:	b7 e1       	ldi	r27, 0x17	; 23
+  8a:	11 97       	sbiw	r26, 0x01	; 1
+  8c:	f1 f7       	brne	.-4      	; 0x8a <main+0x1e>
+  8e:	00 c0       	rjmp	.+0      	; 0x90 <main+0x24>
+  90:	00 00       	nop
+			_delay_ms(3);
+			PORTD = 0x2; //0x0000 0010
+  92:	72 bb       	out	0x12, r23	; 18
+  94:	af e6       	ldi	r26, 0x6F	; 111
+  96:	b7 e1       	ldi	r27, 0x17	; 23
+  98:	11 97       	sbiw	r26, 0x01	; 1
+  9a:	f1 f7       	brne	.-4      	; 0x98 <main+0x2c>
+  9c:	00 c0       	rjmp	.+0      	; 0x9e <main+0x32>
+  9e:	00 00       	nop
+			_delay_ms(3);
+			PORTD = 0x06;//0x0000 0110
+  a0:	62 bb       	out	0x12, r22	; 18
+  a2:	af e6       	ldi	r26, 0x6F	; 111
+  a4:	b7 e1       	ldi	r27, 0x17	; 23
+  a6:	11 97       	sbiw	r26, 0x01	; 1
+  a8:	f1 f7       	brne	.-4      	; 0xa6 <main+0x3a>
+  aa:	00 c0       	rjmp	.+0      	; 0xac <main+0x40>
+  ac:	00 00       	nop
+			_delay_ms(3);
+			PORTD = 0x04;//0x0000 0100
+  ae:	52 bb       	out	0x12, r21	; 18
+  b0:	af e6       	ldi	r26, 0x6F	; 111
+  b2:	b7 e1       	ldi	r27, 0x17	; 23
+  b4:	11 97       	sbiw	r26, 0x01	; 1
+  b6:	f1 f7       	brne	.-4      	; 0xb4 <main+0x48>
+  b8:	00 c0       	rjmp	.+0      	; 0xba <main+0x4e>
+  ba:	00 00       	nop
+			_delay_ms(3);
+			PORTD = 0x0C;//0x0000 1100
+  bc:	42 bb       	out	0x12, r20	; 18
+  be:	af e6       	ldi	r26, 0x6F	; 111
+  c0:	b7 e1       	ldi	r27, 0x17	; 23
+  c2:	11 97       	sbiw	r26, 0x01	; 1
+  c4:	f1 f7       	brne	.-4      	; 0xc2 <main+0x56>
+  c6:	00 c0       	rjmp	.+0      	; 0xc8 <main+0x5c>
+  c8:	00 00       	nop
+			_delay_ms(3);
+			PORTD = 0x08;//0x0000 1000
+  ca:	32 bb       	out	0x12, r19	; 18
+  cc:	af e6       	ldi	r26, 0x6F	; 111
+  ce:	b7 e1       	ldi	r27, 0x17	; 23
+  d0:	11 97       	sbiw	r26, 0x01	; 1
+  d2:	f1 f7       	brne	.-4      	; 0xd0 <main+0x64>
+  d4:	00 c0       	rjmp	.+0      	; 0xd6 <main+0x6a>
+  d6:	00 00       	nop
+			_delay_ms(3);
+			PORTD = 0x09;//0x0000 1001
+  d8:	22 bb       	out	0x12, r18	; 18
+  da:	01 97       	sbiw	r24, 0x01	; 1
+		_delay_ms(100);
+	}
+	*/
+	//this cod is microstep mode
+	while(1){
+		for(int i=0; i<3; i++){
+  dc:	99 f6       	brne	.-90     	; 0x84 <main+0x18>
+  de:	bf ef       	ldi	r27, 0xFF	; 255
+  e0:	f0 e7       	ldi	r31, 0x70	; 112
+  e2:	82 e0       	ldi	r24, 0x02	; 2
+  e4:	b1 50       	subi	r27, 0x01	; 1
+  e6:	f0 40       	sbci	r31, 0x00	; 0
+  e8:	80 40       	sbci	r24, 0x00	; 0
+  ea:	e1 f7       	brne	.-8      	; 0xe4 <main+0x78>
+  ec:	00 c0       	rjmp	.+0      	; 0xee <main+0x82>
+  ee:	00 00       	nop
+  f0:	c7 cf       	rjmp	.-114    	; 0x80 <main+0x14>
+
+000000f2 <_exit>:
+  f2:	f8 94       	cli
+
+000000f4 <__stop_program>:
+  f4:	ff cf       	rjmp	.-2      	; 0xf4 <__stop_program>
